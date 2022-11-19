@@ -66,13 +66,13 @@ class Usuario(models.Model):
     data_criacao = models.DateField()
     altura = models.IntegerField()
     freq_exercicios = models.CharField(max_length=1, choices=FREQUENCIA)
-    expectativas = models.ManyToManyField(Expectativas)
+    # expectativas = models.ManyToManyField(Expectativas, null=True)
     tipo_usuario = models.CharField(max_length=1)
     pontuacao = models.IntegerField()
     nivel = models.IntegerField()
     imagem = models.BinaryField()
     primeiro_acesso = models.BooleanField(default=False)
-    plano = models.ForeignKey(Plano, on_delete=models.CASCADE)
+    plano = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
