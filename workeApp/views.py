@@ -64,3 +64,13 @@ class LoginView(APIView):
         })
 
         return response
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'message': 'Logout realizado com sucesso!'
+        }
+
+        return response
