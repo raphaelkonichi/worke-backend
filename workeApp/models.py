@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+import datetime
 
 # Create your models here.
 class Plano(models.Model):
@@ -43,7 +45,7 @@ class Expectativas(models.Model):
     def __str__(self):
         return self.name
 
-class Usuario(models.Model):
+class Usuario(AbstractUser):
     GENEROS = ( 
         ('M', 'Masculino'),
         ('F', 'Feminino'),
@@ -57,13 +59,13 @@ class Usuario(models.Model):
     )
     nome = models.CharField(max_length=50)
     sobrenome = models.CharField(max_length=80)
-    email = models.CharField(max_length=50)
-    senha = models.CharField(max_length=50)
+    email = models.CharField(max_length=255, unique=True)
+    password = models.CharField(max_length=255, default="password")
     cpf = models.CharField(max_length=11)
     telefone = models.CharField(max_length=11)
     genero = models.CharField(max_length=1, choices=GENEROS)
     data_nascimento = models.DateField()
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
     altura = models.IntegerField()
     freq_exercicios = models.CharField(max_length=1, choices=FREQUENCIA)
     # expectativas = models.ManyToManyField(Expectativas, null=True)
@@ -73,6 +75,11 @@ class Usuario(models.Model):
     imagem = models.BinaryField()
     primeiro_acesso = models.BooleanField(default=False)
     plano = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
+
+    username = None
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.name
