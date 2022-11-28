@@ -1,0 +1,13 @@
+Instalar mysql e utilizar o usuário root e senha no arquivo settings.py (atualizar para 'USER' : 'root' e 'PASSWORD' : 'sua senha do mysql')
+
+Depois rodar os comandos:
+
+pip install django
+pip install mysqlclient
+pip install djangorestframework
+pip install djangorestframework-simplejwt
+python -m pip install django-cors-headers
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py runserver
