@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Usuario
-from workeApp.serializer import UsuarioSerializer
+from workeApp.models import Usuario, Empresa
+from workeApp.serializer import UsuarioSerializer, EmpresaSerializer
 import jwt, datetime
 
 # Create your views here.
@@ -24,6 +24,24 @@ class UsuariosViewSet(APIView):
 
         usuario = Usuario.objects.filter(id=payload['id']).first()
         serializer = UsuarioSerializer(usuario)
+
+        return Response(serializer.data)
+
+class EmpresaViewSet(APIView):
+
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+
+        empresa = Empresa.objects.filter(id=payload['id']).first()
+        serializer = EmpresaSerializer(empresa)
 
         return Response(serializer.data)
 
@@ -49,6 +67,37 @@ class LoginView(APIView):
 
         payload = {
             "id": usuario.id,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            "iat": datetime.datetime.utcnow()
+        }
+
+        token = jwt.encode(payload, 'secret', algorithm='HS256')
+
+        response = Response()
+
+        response.set_cookie(key='jwt', value=token, httponly=True)        
+
+        response.data = ({
+            'jwt': token
+        })
+
+        return response
+
+class LoginEmpresaView(APIView):
+    def post(self, request):
+        email = request.data['email']
+        senha = request.data['senha']
+
+        empresa = Empresa.objects.filter(email=email).first()
+
+        if empresa is None:
+            raise AuthenticationFailed('Empresa não encontrada!')
+
+        # if not empresa.check_password(senha):
+        #     raise AuthenticationFailed('Senha incorreta!')
+
+        payload = {
+            "id": empresa.id,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             "iat": datetime.datetime.utcnow()
         }

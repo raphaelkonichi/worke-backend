@@ -5,7 +5,7 @@ import datetime
 # Create your models here.
 class Plano(models.Model):
     nome = models.CharField(max_length=50)
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
     valor = models.DecimalField(max_digits=3, decimal_places=2)
     instrument = models.CharField(max_length=100)
     max_participantes = models.IntegerField()
@@ -19,8 +19,8 @@ class Empresa(models.Model):
     email = models.CharField(max_length=50)
     senha = models.CharField(max_length=50)
     telefone = models.CharField(max_length=11)
-    plano = models.ForeignKey(Plano, on_delete=models.CASCADE)
-    data_criacao = models.DateField()
+    plano = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
+    data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
@@ -33,14 +33,14 @@ class Exercicio(models.Model):
     )
     nome = models.CharField(max_length=80)
     categoria = models.CharField(max_length=1, choices=CATEGORIAS)
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
 
 class Expectativas(models.Model):
     descricao = models.CharField(max_length=50)
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
@@ -87,7 +87,7 @@ class Usuario(AbstractUser):
 class Exercicio_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     exercicio = models.ForeignKey(Exercicio, on_delete=models.CASCADE)
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
     favorito = models.BooleanField(default=False)
 
     def __str__(self):
@@ -96,7 +96,7 @@ class Exercicio_usuario(models.Model):
 class Exercicio_realizado(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     exercicio = models.ForeignKey(Exercicio, on_delete=models.CASCADE)
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
     pontuacao = models.IntegerField()
     duracao = models.IntegerField()
 
@@ -105,7 +105,7 @@ class Exercicio_realizado(models.Model):
 
 class Peso_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
     data_medicao = models.DateField()
     peso = models.DecimalField(max_digits=3, decimal_places=2)
 
@@ -119,7 +119,7 @@ class Grupo(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     admin = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     qtd_participantes = models.IntegerField()
-    data_criacao = models.DateField()
+    data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
@@ -129,7 +129,7 @@ class Usuario_grupo(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     pontuacao = models.IntegerField()
     posicao_ranking = models.IntegerField()
-    data_criacao = models.DateField() 
+    data_criacao = models.DateField(default=datetime.date.today) 
     data_posicao  = models.DateField()
 
     def __str__(self):
