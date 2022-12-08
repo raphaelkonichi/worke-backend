@@ -11,7 +11,8 @@ import jwt, datetime
 
 class UsuariosViewSet(APIView):
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
+
         token = request.COOKIES.get('jwt')
 
         if not token:
@@ -21,9 +22,34 @@ class UsuariosViewSet(APIView):
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+        
+        usuario = None
 
-        usuario = Usuario.objects.filter(id=payload['id']).first()
-        serializer = UsuarioSerializer(usuario)
+        try:
+            id = request.query_params["id"]
+            if id is not None:
+                usuario = Usuario.objects.filter(id=id)
+                serializer = UsuarioSerializer(usuario, many=True)
+        except:
+            None
+        try:
+            nome = request.query_params["nome"]
+            if nome is not None:
+                usuario = Usuario.objects.filter(nome__icontains=nome)
+                serializer = UsuarioSerializer(usuario, many=True)
+        except:
+            None
+        try:
+            email = request.query_params["email"]
+            if email is not None:
+                usuario = Usuario.objects.filter(email__icontains=email)
+                serializer = UsuarioSerializer(usuario, many=True)
+        except:
+            None
+
+        if usuario is None:
+            usuario = Usuario.objects.all()
+            serializer = UsuarioSerializer(usuario, many=True)
 
         return Response(serializer.data)
 
