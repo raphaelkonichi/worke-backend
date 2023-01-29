@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Usuario, Empresa
-from workeApp.serializer import UsuarioSerializer, EmpresaSerializer
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario
+from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer
 import jwt, datetime
 
 # Create your views here.
@@ -71,6 +71,52 @@ class EmpresaViewSet(APIView):
 
         return Response(serializer.data)
 
+class PlanoViewSet(APIView):
+
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+
+        plano = Plano.objects.filter(id=payload['id']).first()
+        serializer = PlanoSerializer(plano)
+
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = PlanoSerializer(data=request.data)
+        serializer.save()
+        return Response(serializer.data)
+
+class PesoUsuarioViewSet(APIView):
+
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+
+        peso_usuario = Peso_usuario.objects.filter(id=payload['id']).first()
+        serializer = Peso_usuarioSerializer(peso_usuario)
+
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = Peso_usuarioSerializer(data=request.data)
+        serializer.save()
+        return Response(serializer.data)
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = UsuarioSerializer(data=request.data)
@@ -108,6 +154,14 @@ class LoginView(APIView):
         })
 
         return response
+
+
+class RegisterEmpresaView(APIView):
+    def post(self, request):
+        serializer = EmpresaSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 class LoginEmpresaView(APIView):
     def post(self, request):

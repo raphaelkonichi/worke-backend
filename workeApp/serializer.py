@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from workeApp.models import Usuario, Empresa
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +35,30 @@ class EmpresaSerializer(serializers.ModelSerializer):
 
         if senha is not None:
             instance.set_password(senha)
+
+        instance.save()
+
+        return instance
+
+class PlanoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plano
+        fields = ['id','nome','valor','instrument','max_participantes']
+        
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+
+        instance.save()
+
+        return instance
+
+class Peso_usuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Peso_usuario
+        fields = ['usuario', 'data_criacao', 'data_medicao', 'peso']
+            
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
 
         instance.save()
 
