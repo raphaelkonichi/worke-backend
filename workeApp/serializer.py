@@ -30,11 +30,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        senha = validated_data.pop('senha', None)
         instance = self.Meta.model(**validated_data)
-
-        if senha is not None:
-            instance.set_password(senha)
 
         instance.save()
 

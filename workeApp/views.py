@@ -173,8 +173,8 @@ class LoginEmpresaView(APIView):
         if empresa is None:
             raise AuthenticationFailed('Empresa não encontrada!')
 
-        # if not empresa.check_password(senha):
-        #     raise AuthenticationFailed('Senha incorreta!')
+        if empresa.senha != senha:
+            raise AuthenticationFailed('Senha incorreta!')
 
         payload = {
             "id": empresa.id,

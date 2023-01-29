@@ -93,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE'  : 'django.db.backends.mysql', # <-- UPDATED line 
         'NAME'    : 'workedb',                 # <-- UPDATED line 
-        'USER'    : 'admin',                     # <-- UPDATED line
-        'PASSWORD': 'Gilmar123',              # <-- UPDATED line
+        'USER'    : 'root',                     # <-- UPDATED line
+        'PASSWORD': 'Gilmar@123',              # <-- UPDATED line
         'HOST'    : 'localhost',                # <-- UPDATED line
         'PORT'    : '3306',
     }
