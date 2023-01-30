@@ -55,7 +55,7 @@ class UsuariosViewSet(APIView):
 
 class EmpresaViewSet(APIView):
 
-    def get(self, request):
+    def get(self, request, pk=None):
         token = request.COOKIES.get('jwt')
 
         if not token:
@@ -70,6 +70,15 @@ class EmpresaViewSet(APIView):
         serializer = EmpresaSerializer(empresa)
 
         return Response(serializer.data)
+    
+    def delete(self, request, pk=None):
+        empresa = Empresa.objects.filter(id=pk)
+        
+        if not empresa:
+            return Response('Empresa não encontrada!')
+
+        empresa.delete()
+        return Response('Empresa excluída com sucesso!')
 
 class PlanoViewSet(APIView):
 
@@ -154,7 +163,6 @@ class LoginView(APIView):
         })
 
         return response
-
 
 class RegisterEmpresaView(APIView):
     def post(self, request):

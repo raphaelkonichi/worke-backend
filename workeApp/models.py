@@ -75,6 +75,7 @@ class Usuario(AbstractUser):
     imagem = models.BinaryField()
     primeiro_acesso = models.BooleanField(default=False)
     plano = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
 
     username = None
 
