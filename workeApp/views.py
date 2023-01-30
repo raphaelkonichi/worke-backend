@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario
-from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo
+from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer
 import jwt, datetime
 
 # Create your views here.
@@ -221,6 +221,57 @@ class FuncionarioView(APIView):
 
         usuario.delete()
         return Response('Usuário excluído com sucesso!')
+
+class GrupoView(APIView):
+    def get(self, request, pk=None):
+        grupo = Grupo.objects.filter(id=pk).first()
+        serializer = GrupoSerializer(grupo)
+
+        return Response(serializer.data)
+            
+    def patch(self, request, pk=None):
+        grupo = Grupo.objects.filter(id=pk).first()
+        serializer = GrupoSerializer(grupo, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(code=201, data=serializer.data)
+
+        return Response(code=400, data="Dados incorretos!")
+        
+    def delete(self, request, pk=None):
+        grupo = Grupo.objects.filter(id=pk).first()
+        
+        if not grupo:
+            return Response('Usuário não encontrado!')
+
+        grupo.delete()
+        return Response('Usuário excluído com sucesso!')
+        
+class EmpresaGrupoView(APIView):
+    def post(self, request, pk=None):
+
+        empresaobj = Empresa.objects.filter(id=pk).first()
+
+        serializer = GrupoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        id = serializer.data['id']
+        grupo = Grupo.objects.get(id=id)
+        grupo.empresa = empresaobj
+        grupo.save()
+
+        updatedserializer = GrupoSerializer(grupo)
+        return Response(updatedserializer.data)
+        
+    def get(self, request, pk=None):
+        empresaobj = Empresa.objects.filter(id=pk).first()
+
+        grupo = Grupo.objects.filter(empresa=empresaobj)
+        serializer = GrupoSerializer(grupo, many=True)
+
+        return Response(serializer.data)
 
 class LoginEmpresaView(APIView):
     def post(self, request):
