@@ -11,7 +11,7 @@ class Plano(models.Model):
     max_participantes = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return self.nome
 
 class Empresa(models.Model):
     nome = models.CharField(max_length=80)
@@ -23,7 +23,7 @@ class Empresa(models.Model):
     data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
-        return self.name
+        return self.nome
 
 class Exercicio(models.Model):
     CATEGORIAS = ( 
@@ -36,14 +36,14 @@ class Exercicio(models.Model):
     data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
-        return self.name
+        return self.nome
 
 class Expectativas(models.Model):
     descricao = models.CharField(max_length=50)
     data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
-        return self.name
+        return self.descricao
 
 class Usuario(AbstractUser):
     GENEROS = ( 
@@ -61,18 +61,18 @@ class Usuario(AbstractUser):
     sobrenome = models.CharField(max_length=80)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255, default="password")
-    cpf = models.CharField(max_length=11)
-    telefone = models.CharField(max_length=11)
-    genero = models.CharField(max_length=1, choices=GENEROS)
-    data_nascimento = models.DateField()
+    cpf = models.CharField(max_length=11, null=True)
+    telefone = models.CharField(max_length=11, null=True)
+    genero = models.CharField(max_length=1, choices=GENEROS, null=True)
+    data_nascimento = models.DateField(null=True)
     data_criacao = models.DateField(default=datetime.date.today)
-    altura = models.IntegerField()
-    freq_exercicios = models.CharField(max_length=1, choices=FREQUENCIA)
+    altura = models.IntegerField(null=True)
+    freq_exercicios = models.CharField(max_length=1, choices=FREQUENCIA, null=True)
     # expectativas = models.ManyToManyField(Expectativas, null=True)
-    tipo_usuario = models.CharField(max_length=1)
-    pontuacao = models.IntegerField()
-    nivel = models.IntegerField()
-    imagem = models.BinaryField()
+    tipo_usuario = models.CharField(max_length=1, null=True)
+    pontuacao = models.IntegerField(null=True)
+    nivel = models.IntegerField(null=True)
+    imagem = models.BinaryField(null=True)
     primeiro_acesso = models.BooleanField(default=False)
     plano = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
@@ -83,7 +83,7 @@ class Usuario(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.name
+        return self.nome
 
 class Exercicio_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -92,7 +92,7 @@ class Exercicio_usuario(models.Model):
     favorito = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.data_criacao
 
 class Exercicio_realizado(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -102,7 +102,7 @@ class Exercicio_realizado(models.Model):
     duracao = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return self.data_criacao
 
 class Peso_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -111,7 +111,7 @@ class Peso_usuario(models.Model):
     peso = models.DecimalField(max_digits=3, decimal_places=2)
 
     def __str__(self):
-        return self.name
+        return self.peso
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=50)
@@ -123,7 +123,7 @@ class Grupo(models.Model):
     data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
-        return self.name
+        return self.titulo
 
 class Usuario_grupo(models.Model):
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
@@ -134,4 +134,4 @@ class Usuario_grupo(models.Model):
     data_posicao  = models.DateField()
 
     def __str__(self):
-        return self.name
+        return self.data_criacao

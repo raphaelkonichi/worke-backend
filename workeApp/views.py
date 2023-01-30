@@ -171,6 +171,57 @@ class RegisterEmpresaView(APIView):
         serializer.save()
         return Response(serializer.data)
 
+class EmpresaFuncionarioView(APIView):
+    def post(self, request, pk=None):
+
+        empresaobj = Empresa.objects.filter(id=pk).first()
+
+        serializer = UsuarioSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        id = serializer.data['id']
+        usuario = Usuario.objects.get(id=id)
+        usuario.empresa = empresaobj
+        usuario.save()
+
+        updatedserializer = UsuarioSerializer(usuario)
+        return Response(updatedserializer.data)
+
+    def get(self, request, pk=None):
+        empresaobj = Empresa.objects.filter(id=pk).first()
+
+        usuarios = Usuario.objects.filter(empresa=empresaobj)
+        serializer = UsuarioSerializer(usuarios, many=True)
+
+        return Response(serializer.data)
+
+class FuncionarioView(APIView):
+    def get(self, request, pk=None):
+        usuario = Usuario.objects.filter(id=pk).first()
+        serializer = UsuarioSerializer(usuario)
+
+        return Response(serializer.data)
+            
+    def patch(self, request, pk=None):
+        usuario = Usuario.objects.filter(id=pk).first()
+        serializer = UsuarioSerializer(usuario, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(code=201, data=serializer.data)
+
+        return Response(code=400, data="Dados incorretos!")
+        
+    def delete(self, request, pk=None):
+        usuario = Usuario.objects.filter(id=pk)
+        
+        if not usuario:
+            return Response('Usuário não encontrado!')
+
+        usuario.delete()
+        return Response('Usuário excluído com sucesso!')
+
 class LoginEmpresaView(APIView):
     def post(self, request):
         email = request.data['email']
