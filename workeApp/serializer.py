@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,3 +72,15 @@ class GrupoSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+class Usuario_grupoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grupo
+        fields = ['id','grupo','usuario','pontuacao','posicao_ranking','data_criacao','data_posicao']
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+
+        instance.save()
+
+        return instance        

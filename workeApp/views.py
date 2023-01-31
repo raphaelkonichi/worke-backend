@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo
-from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo
+from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer
 import jwt, datetime
 
 # Create your views here.
@@ -270,6 +270,15 @@ class EmpresaGrupoView(APIView):
 
         grupo = Grupo.objects.filter(empresa=empresaobj)
         serializer = GrupoSerializer(grupo, many=True)
+
+        return Response(serializer.data)
+                
+class GrupoFuncionarioView(APIView):        
+    def get(self, request, pk=None):
+        grupoobj = Grupo.objects.filter(id=pk).first()
+
+        funcionarios = Usuario_grupo.objects.filter(grupo=grupoobj).order_by('-pontuacao')
+        serializer = Usuario_grupoSerializer(funcionarios, many=True)
 
         return Response(serializer.data)
 
