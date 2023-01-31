@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from datetime import datetime as dt, timedelta
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -272,7 +273,7 @@ class EmpresaGrupoView(APIView):
         serializer = GrupoSerializer(grupo, many=True)
 
         return Response(serializer.data)
-                
+
 class GrupoFuncionarioView(APIView):        
     def get(self, request, pk=None):
         grupoobj = Grupo.objects.filter(id=pk).first()
@@ -281,6 +282,18 @@ class GrupoFuncionarioView(APIView):
         serializer = Usuario_grupoSerializer(funcionarios, many=True)
 
         return Response(serializer.data)
+
+class DashboardFuncionarioView(APIView):
+    def get(self, request):
+        return Response(Usuario.objects.filter(empresa__isnull=False).count())
+
+class DashboardFuncionario30DiasView(APIView):
+    def get(self, request):
+        return Response(Usuario.objects.filter(data_ultimo_acesso__lte=dt.today(), data_ultimo_acesso__gt=dt.today()-datetime.timedelta(days=30)).filter(empresa__isnull=False).count())
+
+class DashboardTotalSalasView(APIView):
+    def get(self, request):
+        return Response(Grupo.objects.all().count())
 
 class LoginEmpresaView(APIView):
     def post(self, request):

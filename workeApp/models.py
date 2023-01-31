@@ -66,6 +66,7 @@ class Usuario(AbstractUser):
     genero = models.CharField(max_length=1, choices=GENEROS, null=True)
     data_nascimento = models.DateField(null=True)
     data_criacao = models.DateField(default=datetime.date.today)
+    data_ultimo_acesso = models.DateField(default=datetime.date.today)
     altura = models.IntegerField(null=True)
     freq_exercicios = models.CharField(max_length=1, choices=FREQUENCIA, null=True)
     # expectativas = models.ManyToManyField(Expectativas, null=True)
