@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from datetime import datetime as dt, timedelta
+from django.db.models import Sum
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -290,6 +291,11 @@ class DashboardFuncionarioView(APIView):
 class DashboardFuncionario30DiasView(APIView):
     def get(self, request):
         return Response(Usuario.objects.filter(data_ultimo_acesso__lte=dt.today(), data_ultimo_acesso__gt=dt.today()-datetime.timedelta(days=30)).filter(empresa__isnull=False).count())
+
+class DashboardPontuacaoTotalSalaView(APIView):
+    def get(self, request, pk=None):
+        grupoobj = Grupo.objects.filter(id=pk).first()
+        return Response(Usuario_grupo.objects.filter(grupo=grupoobj).aggregate(Sum('pontuacao')))
 
 class DashboardTotalSalasView(APIView):
     def get(self, request):

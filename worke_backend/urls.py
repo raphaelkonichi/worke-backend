@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from workeApp.views import UsuariosViewSet, RegisterView, LoginView, LogoutView, EmpresaViewSet, LoginEmpresaView, RegisterEmpresaView, FuncionarioView, EmpresaFuncionarioView, GrupoView, EmpresaGrupoView, GrupoFuncionarioView, DashboardFuncionarioView, DashboardFuncionario30DiasView, DashboardTotalSalasView
+from workeApp.views import UsuariosViewSet, RegisterView, LoginView, LogoutView, EmpresaViewSet, LoginEmpresaView, RegisterEmpresaView, FuncionarioView, EmpresaFuncionarioView, GrupoView, EmpresaGrupoView, GrupoFuncionarioView, DashboardFuncionarioView, DashboardFuncionario30DiasView, DashboardTotalSalasView, DashboardPontuacaoTotalSalaView
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -35,6 +35,7 @@ urlpatterns = [
     path('dashboardFuncionario/', DashboardFuncionarioView.as_view()),
     path('dashboardFuncionario30Dias/', DashboardFuncionario30DiasView.as_view()),
     path('dashboardTotalSalas/', DashboardTotalSalasView.as_view()),
+    path('dashboardPontuacaoTotalSalaView/<int:pk>', DashboardPontuacaoTotalSalaView.as_view()),
     path('grupo/<int:pk>', GrupoView.as_view()),
     path('grupoFuncionario/<int:pk>', GrupoFuncionarioView.as_view()),
     path('login', LoginView.as_view()),

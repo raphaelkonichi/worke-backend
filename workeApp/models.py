@@ -119,7 +119,7 @@ class Grupo(models.Model):
     codigo = models.CharField(max_length=4)
     senha = models.CharField(max_length=50)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    admin = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    admin = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True)
     qtd_participantes = models.IntegerField()
     data_criacao = models.DateField(default=datetime.date.today)
 
