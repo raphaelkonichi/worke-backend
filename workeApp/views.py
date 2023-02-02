@@ -82,6 +82,16 @@ class EmpresaViewSet(APIView):
         empresa.delete()
         return Response('Empresa excluída com sucesso!')
 
+    def patch(self, request, pk=None):
+        empresa = Empresa.objects.filter(id=pk)
+        serializer = EmpresaSerializer(empresa, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(code=201, data=serializer.data)
+
+        return Response(code=400, data="Dados incorretos!")
+
 class PlanoViewSet(APIView):
 
     def get(self, request):
