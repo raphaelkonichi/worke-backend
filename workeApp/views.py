@@ -58,7 +58,7 @@ class UsuariosViewSet(APIView):
 class TodasEmpresasViewSet(APIView):
 
     def get(self, request):
-        empresas = Empresa.objects.all();
+        empresas = Empresa.objects.all()
 
         serializer = EmpresaSerializer(empresas, many=True)
 
