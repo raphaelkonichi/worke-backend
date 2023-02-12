@@ -57,8 +57,7 @@ class Usuario(AbstractUser):
         # ('F', 'Feminino'),
         # ('O', 'Outros'),
     )
-    nome = models.CharField(max_length=50)
-    sobrenome = models.CharField(max_length=80)
+    nome = models.CharField(max_length=80)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255, default="password")
     cpf = models.CharField(max_length=11, null=True)
@@ -115,12 +114,12 @@ class Peso_usuario(models.Model):
         return self.peso
 
 class Grupo(models.Model):
-    titulo = models.CharField(max_length=50)
-    codigo = models.CharField(max_length=4)
-    senha = models.CharField(max_length=50)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=50, null=True)
+    codigo = models.CharField(max_length=4, null=True)
+    senha = models.CharField(max_length=50, null=True)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
     admin = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True)
-    qtd_participantes = models.IntegerField()
+    qtd_participantes = models.IntegerField(default=5)
     data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):

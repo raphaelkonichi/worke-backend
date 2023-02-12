@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo
 from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer
+from workeApp.utils import id_generator
 import jwt, datetime
 
 # Create your views here.
@@ -269,6 +270,35 @@ class GrupoView(APIView):
         grupo.delete()
         return Response('Usuário excluído com sucesso!')
         
+class CriarGrupoViewSet(APIView):
+    def post(self, request, pk=None):
+        usuario = Usuario.objects.filter(id=pk).first()
+
+        while True:
+            try:
+                new_code = id_generator()
+                check_grupo = Grupo.objects.filter(codigo=new_code).first()
+                if check_grupo is None:
+                    break                    
+            except:
+                None
+
+        serializer = GrupoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data.titulo = ""
+        serializer.validated_data.admin = usuario
+        serializer.validated_data.codigo = new_code
+        serializer.save()
+        
+        id = serializer.data['id']
+        grupo = Grupo.objects.get(id=id)
+        grupo.admin = usuario
+        grupo.codigo = new_code
+
+        grupo.save()
+        updatedserializer = GrupoSerializer(grupo)
+        return Response(updatedserializer.data)
+
 class EmpresaGrupoView(APIView):
     def post(self, request, pk=None):
 

@@ -4,7 +4,7 @@ from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuari
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id','nome','sobrenome','email','password','cpf','telefone','genero','data_nascimento','data_criacao','altura','freq_exercicios','tipo_usuario','pontuacao','nivel','primeiro_acesso','plano','empresa']
+        fields = ['id','nome','email','password','cpf','telefone','genero','data_nascimento','data_criacao','altura','freq_exercicios','tipo_usuario','pontuacao','nivel','primeiro_acesso','plano','empresa']
         extra_kwargs = {
             'password': {'write_only': True}
         }
