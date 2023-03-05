@@ -78,10 +78,24 @@ class EmpresaViewSet(APIView):
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Não foi possível realizar a autenticação!')
 
-        empresa = Empresa.objects.filter(id=payload['id']).first()
-        serializer = EmpresaSerializer(empresa)
+        empresa = Empresa.objects.filter(id=payload['id']).first()        
+        
+        response = Response()
+        response.data = ({
+            "id": empresa.id,
+            "nome": empresa.nome,
+            "email": empresa.email,
+            "cnpj": empresa.cnpj,
+            "telefone": empresa.telefone,
+            "data_criacao": empresa.data_criacao,
+            "qtd_usuarios": Usuario.objects.filter(empresa__isnull=False).count(),
+            "funcionarios_ativos_30dias": Usuario.objects.filter(data_ultimo_acesso__lte=dt.today(), data_ultimo_acesso__gt=dt.today()-datetime.timedelta(days=30)).filter(empresa__isnull=False).count(),
+            "total_de_salas": Grupo.objects.all().count()
+        })
+        # serializer = EmpresaSerializer(empresa)
 
-        return Response(serializer.data)
+        # return Response(serializer.data)
+        return response
     
     def delete(self, request, pk=None):
         empresa = Empresa.objects.filter(id=pk)
