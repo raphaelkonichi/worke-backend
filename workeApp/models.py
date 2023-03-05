@@ -52,25 +52,28 @@ class Usuario(AbstractUser):
         ('O', 'Outros'),
     )
     FREQUENCIA = ( 
-        # Frequencia dos exercicios
-        # ('M', 'Masculino'),
-        # ('F', 'Feminino'),
-        # ('O', 'Outros'),
+        ('Iniciante', 'Iniciante'),
+        ('Intermediário', 'Intermediário'),
+        ('Avançado', 'Avançado'),
     )
+    primeiro_nome = models.CharField(max_length=50, null=True)
     nome = models.CharField(max_length=80)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255, default="password")
-    cpf = models.CharField(max_length=11, null=True)
-    telefone = models.CharField(max_length=11, null=True)
+    # cpf = models.CharField(max_length=11, null=True)
+    # telefone = models.CharField(max_length=11, null=True)
     genero = models.CharField(max_length=1, choices=GENEROS, null=True)
     data_nascimento = models.DateField(null=True)
     data_criacao = models.DateField(default=datetime.date.today)
     data_ultimo_acesso = models.DateField(default=datetime.date.today)
     altura = models.IntegerField(null=True)
-    freq_exercicios = models.CharField(max_length=1, choices=FREQUENCIA, null=True)
+    freq_exercicios = models.CharField(max_length=15, choices=FREQUENCIA, null=True)
     # expectativas = models.ManyToManyField(Expectativas, null=True)
     tipo_usuario = models.CharField(max_length=1, null=True)
     pontuacao = models.IntegerField(null=True)
+    dias_consecutivos = models.IntegerField(null=True)
+    qtd_exercicios = models.IntegerField(null=True)
+    minutos_feitos = models.IntegerField(null=True)
     nivel = models.IntegerField(null=True)
     imagem = models.BinaryField(null=True)
     primeiro_acesso = models.BooleanField(default=False)

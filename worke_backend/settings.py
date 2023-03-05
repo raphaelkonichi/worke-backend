@@ -93,9 +93,9 @@ DATABASES = {
     'default': {
         'ENGINE'  : 'django.db.backends.mysql', # <-- UPDATED line 
         'NAME'    : 'workedb',                 # <-- UPDATED line 
-        'USER'    : 'root',                     # <-- UPDATED line
-        'PASSWORD': 'Gilmar@123',              # <-- UPDATED line
-        'HOST'    : 'localhost',                # <-- UPDATED line
+        'USER'    : 'admin',                     # <-- UPDATED line
+        'PASSWORD': 'Gilmar123',              # <-- UPDATED line
+        'HOST'    : 'workedb.cuidirhmc88t.us-east-1.rds.amazonaws.com',                # <-- UPDATED line
         'PORT'    : '3306',
     }
 }
