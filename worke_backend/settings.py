@@ -93,11 +93,11 @@ SIMPLE_JWT = {
 DATABASES = {
     'default': {
         'ENGINE'  : 'django.db.backends.mysql', # <-- UPDATED line 
-        'NAME'    : 'workedb',                 # <-- UPDATED line 
-        'USER'    : 'admin',                     # <-- UPDATED line
-        'PASSWORD': 'Gilmar123',              # <-- UPDATED line
-        'HOST'    : 'workedb.cuidirhmc88t.us-east-1.rds.amazonaws.com',                # <-- UPDATED line
-        'PORT'    : '3306',
+        'NAME'    : config("DB_NAME"),                 # <-- UPDATED line 
+        'USER'    : config("USER_NAME"),                     # <-- UPDATED line
+        'PASSWORD': config("USER_PASSWORD"),              # <-- UPDATED line
+        'HOST'    : config("DB_URL"),                # <-- UPDATED line
+        'PORT'    : config("DB_PORT"),
     }
 }
 
