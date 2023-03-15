@@ -46,39 +46,41 @@ class Expectativas(models.Model):
         return self.descricao
 
 class Usuario(AbstractUser):
-    GENEROS = ( 
+    GENDER = ( 
         ('M', 'Masculino'),
         ('F', 'Feminino'),
         ('O', 'Outros'),
     )
-    FREQUENCIA = ( 
-        ('Iniciante', 'Iniciante'),
-        ('Intermediário', 'Intermediário'),
-        ('Avançado', 'Avançado'),
+    FREQUENCY = ( 
+        (0, 'Iniciante'),
+        (1, 'Intermediário'),
+        (2, 'Avançado'),
     )
-    primeiro_nome = models.CharField(max_length=50, null=True)
-    nome = models.CharField(max_length=80)
+    first_name = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=80)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255, default="password")
     # cpf = models.CharField(max_length=11, null=True)
     # telefone = models.CharField(max_length=11, null=True)
-    genero = models.CharField(max_length=1, choices=GENEROS, null=True)
-    data_nascimento = models.DateField(null=True)
-    data_criacao = models.DateField(default=datetime.date.today)
-    data_ultimo_acesso = models.DateField(default=datetime.date.today)
-    altura = models.IntegerField(null=True)
-    freq_exercicios = models.CharField(max_length=15, choices=FREQUENCIA, null=True)
+    gender = models.CharField(max_length=1, choices=GENDER, null=True)
+    birth_date = models.DateField(null=True)
+    create_date = models.DateField(default=datetime.date.today)
+    date_last_access = models.DateField(default=datetime.date.today)
+    height = models.CharField(max_length=3,null=True)
+    frequency = models.CharField(max_length=15, choices=FREQUENCY, null=True)
     # expectativas = models.ManyToManyField(Expectativas, null=True)
-    tipo_usuario = models.CharField(max_length=1, null=True)
-    pontuacao = models.IntegerField(null=True)
-    dias_consecutivos = models.IntegerField(null=True)
-    qtd_exercicios = models.IntegerField(null=True)
-    minutos_feitos = models.IntegerField(null=True)
-    nivel = models.IntegerField(null=True)
-    imagem = models.BinaryField(null=True)
-    primeiro_acesso = models.BooleanField(default=False)
-    plano = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
+    user_type = models.CharField(max_length=1, null=True)
+    points = models.IntegerField(null=True)
+    consecutive_days = models.IntegerField(null=True)
+    qty_exercises = models.IntegerField(null=True)
+    total_minutes = models.IntegerField(null=True)
+    level = models.IntegerField(null=True)
+    image = models.BinaryField(null=True)
+    first_access = models.BooleanField(default=False)
+    plan = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
+    enterprise = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
+    weight = models.CharField(max_length=3,null=True)
+    expectations = models.CharField(max_length=255, null=True)
 
     username = None
 
