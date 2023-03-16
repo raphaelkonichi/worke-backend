@@ -164,8 +164,10 @@ class PesoUsuarioViewSet(APIView):
 
 class RegisterView(APIView):
     def post(self, request):
+        print("data",request.data)
         serializer = UsuarioSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid()
+        print(serializer.errors)
         serializer.save()
         return Response(serializer.data)
 

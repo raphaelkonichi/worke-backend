@@ -56,7 +56,7 @@ class Usuario(AbstractUser):
         (1, 'Intermediário'),
         (2, 'Avançado'),
     )
-    first_name = models.CharField(max_length=50, null=True)
+    first_name = models.CharField(max_length=50,null=True)
     name = models.CharField(max_length=80)
     email = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255, default="password")
@@ -75,7 +75,7 @@ class Usuario(AbstractUser):
     qty_exercises = models.IntegerField(null=True)
     total_minutes = models.IntegerField(null=True)
     level = models.IntegerField(null=True)
-    image = models.BinaryField(null=True)
+    # image = models.BinaryField(null=True)
     first_access = models.BooleanField(default=False)
     plan = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
     enterprise = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
@@ -88,7 +88,7 @@ class Usuario(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.nome
+        return self.name
 
 class Exercicio_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
