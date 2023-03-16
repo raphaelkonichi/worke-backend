@@ -168,6 +168,8 @@ class RegisterView(APIView):
         serializer = UsuarioSerializer(data=request.data)
         serializer.is_valid()
         print(serializer.errors)
+        if serializer.errors:
+            return Response(serializer.errors)
         serializer.save()
         return Response(serializer.data)
 
