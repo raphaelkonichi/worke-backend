@@ -293,7 +293,7 @@ class GrupoCodigoView(APIView):
         grupo = Grupo.objects.filter(codigo=pk).first()
 
         if not grupo:
-            return Response('Grupo não encontrado!')
+            return Response('')
 
         serializer = GrupoSerializer(grupo)
 
