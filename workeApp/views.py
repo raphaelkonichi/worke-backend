@@ -287,6 +287,32 @@ class GrupoView(APIView):
 
         grupo.delete()
         return Response('Usuário excluído com sucesso!')
+    
+class GrupoCodigoView(APIView):
+    def get(self, request, pk=None):
+        grupo = Grupo.objects.filter(codigo=pk).first()
+        serializer = GrupoSerializer(grupo)
+
+        return Response(serializer.data)
+            
+    def patch(self, request, pk=None):
+        grupo = Grupo.objects.filter(codigo=pk).first()
+        serializer = GrupoSerializer(grupo, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(code=201, data=serializer.data)
+
+        return Response(code=400, data="Dados incorretos!")
+        
+    def delete(self, request, pk=None):
+        grupo = Grupo.objects.filter(codigo=pk).first()
+        
+        if not grupo:
+            return Response('Usuário não encontrado!')
+
+        grupo.delete()
+        return Response('Usuário excluído com sucesso!')
         
 class CriarGrupoViewSet(APIView):
     def post(self, request, pk=None):
@@ -294,7 +320,7 @@ class CriarGrupoViewSet(APIView):
 
         while True:
             try:
-                new_code = id_generator()
+                new_code = request.data.codigo
                 check_grupo = Grupo.objects.filter(codigo=new_code).first()
                 if check_grupo is None:
                     break                    
