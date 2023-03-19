@@ -322,19 +322,13 @@ class CriarGrupoViewSet(APIView):
     def post(self, request, pk=None):
         usuario = Usuario.objects.filter(id=pk).first()
 
-        new_code = request.data.codigo
-
         serializer = GrupoSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.validated_data.titulo = ""
-        serializer.validated_data.admin = usuario
-        serializer.validated_data.codigo = new_code
         serializer.save()
         
         id = serializer.data['id']
         grupo = Grupo.objects.get(id=id)
         grupo.admin = usuario
-        grupo.codigo = new_code
 
         grupo.save()
         updatedserializer = GrupoSerializer(grupo)
