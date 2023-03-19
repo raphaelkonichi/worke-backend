@@ -322,14 +322,7 @@ class CriarGrupoViewSet(APIView):
     def post(self, request, pk=None):
         usuario = Usuario.objects.filter(id=pk).first()
 
-        while True:
-            try:
-                new_code = request.data.codigo
-                check_grupo = Grupo.objects.filter(codigo=new_code).first()
-                if check_grupo is None:
-                    break                    
-            except:
-                None
+        new_code = request.data.codigo
 
         serializer = GrupoSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
