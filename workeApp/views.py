@@ -5,8 +5,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo
-from workeApp.serializer import UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
+from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer
 from workeApp.utils import id_generator
 import jwt, datetime
 
@@ -115,6 +115,18 @@ class EmpresaViewSet(APIView):
             return Response(code=201, data=serializer.data)
 
         return Response(code=400, data="Dados incorretos!")
+
+class ExercicioViewSet(APIView):
+
+    def get(self, request):
+        exercicio = Exercicio.objects.all()
+        serializer = ExercicioSerializer(exercicio, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ExercicioSerializer(data=request.data)
+        serializer.save()
+        return Response(serializer.data)
 
 class PlanoViewSet(APIView):
 

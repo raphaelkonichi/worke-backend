@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id','password', 'first_name','name','email','gender','birth_date','create_date','date_last_access','height','frequency','user_type','points','consecutive_days','qty_exercises','total_minutes','level','first_access','plan','enterprise','weight', 'expectations']
+        fields = ['id','password','first_name','name','email','gender','birth_date','create_date','date_last_access','height','frequency','user_type','points','consecutive_days','qty_exercises','total_minutes','level', 'image','first_access','plan','enterprise','weight', 'expectations']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -33,6 +33,18 @@ class EmpresaSerializer(serializers.ModelSerializer):
             'senha': {'write_only': True}
         }
 
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+
+        instance.save()
+
+        return instance
+    
+class ExercicioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercicio
+        fields = ['id','nome','categoria','data_criacao']
+        
     def create(self, validated_data):
         instance = self.Meta.model(**validated_data)
 

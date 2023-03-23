@@ -28,6 +28,7 @@ urlpatterns = [
     path('todasEmpresas/', TodasEmpresasViewSet.as_view()),
     path('empresa/', EmpresaViewSet.as_view()),
     path('empresa/<int:pk>', EmpresaViewSet.as_view()),
+    path('exercicio/', EmpresaViewSet.as_view()),
     path('register', RegisterView.as_view()),
     path('registerEmpresa', RegisterEmpresaView.as_view()),
     path('empresaFuncionario/<int:pk>', EmpresaFuncionarioView.as_view()),
