@@ -27,9 +27,8 @@ class Empresa(models.Model):
 
 class Exercicio(models.Model):
     CATEGORIAS = ( 
-        # ('S', 'Small'),
-        # ('M', 'Medium'),
-        # ('L', 'Large'),
+        ('A', 'Alongamento'),
+        ('Y', 'Yoga'),
     )
     nome = models.CharField(max_length=80)
     categoria = models.CharField(max_length=1, choices=CATEGORIAS)
@@ -52,9 +51,9 @@ class Usuario(AbstractUser):
         ('O', 'Outros'),
     )
     FREQUENCY = ( 
-        (0, 'Iniciante'),
-        (1, 'Intermediário'),
-        (2, 'Avançado'),
+        (1, 'Iniciante'),
+        (2, 'Intermediário'),
+        (3, 'Avançado'),
     )
     first_name = models.CharField(max_length=50,null=True)
     name = models.CharField(max_length=80)
