@@ -74,7 +74,7 @@ class Usuario(AbstractUser):
     qty_exercises = models.IntegerField(null=True)
     total_minutes = models.IntegerField(null=True)
     level = models.IntegerField(null=True)
-    image = models.ImageField(upload_to='images', null=True)
+    image = models.TextField(null=True)
     first_access = models.BooleanField(default=False)
     plan = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
     enterprise = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
