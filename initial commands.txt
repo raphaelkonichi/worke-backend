@@ -7,6 +7,7 @@ pip install mysqlclient
 pip install djangorestframework
 pip install djangorestframework-simplejwt
 python -m pip install django-cors-headers
+pip install drf-extra-fields
 python manage.py makemigrations
 python manage.py migrate
 
