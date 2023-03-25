@@ -210,9 +210,14 @@ class LoginView(APIView):
 
         response.set_cookie(key='jwt', value=token, httponly=True)        
 
+        serializer = UsuarioSerializer(usuario)
+
         response.data = ({
-            'jwt': token
+            'jwt': token,
+            'usuario': serializer.data
         })
+
+        print(response.data)
 
         return response
 
@@ -261,9 +266,9 @@ class FuncionarioView(APIView):
         
         if serializer.is_valid():
             serializer.save()
-            return Response(code=201, data=serializer.data)
+            return Response(data=serializer.data)
 
-        return Response(code=400, data="Dados incorretos!")
+        return Response(data="Dados incorretos!")
         
     def delete(self, request, pk=None):
         usuario = Usuario.objects.filter(id=pk)
