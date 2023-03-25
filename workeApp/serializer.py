@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
+from drf_extra_fields.fields import Base64ImageField
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    image = Base64ImageField()
     class Meta:
         model = Usuario
         fields = ['id','password','first_name','name','email','gender','birth_date','create_date','date_last_access','height','frequency','user_type','points','consecutive_days','qty_exercises','total_minutes','level', 'image','first_access','plan','enterprise','weight', 'expectations']
@@ -12,13 +14,14 @@ class UsuarioSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop('password', "")
         print(password)
+        image=validated_data.pop('image')
         # instance = self.Meta.model(**validated_data)
 
         # if password is not None:
         #     instance.set_password(password)
 
         # instance.save()
-        user = Usuario.objects.create(**validated_data)         
+        user = Usuario.objects.create(**validated_data, image=image)         
         user.set_password(password)         
         user.save()
 
