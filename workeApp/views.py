@@ -260,15 +260,15 @@ class FuncionarioView(APIView):
 
         return Response(serializer.data)
             
-    def patch(self, request, pk=None):
+    def post(self, request, pk=None):
         usuario = Usuario.objects.filter(id=pk).first()
         serializer = UsuarioSerializer(usuario, data=request.data, partial=True)
         
         if serializer.is_valid():
             serializer.save()
-            return Response(data=serializer.data)
+            return Response(serializer.data)
 
-        return Response(data="Dados incorretos!")
+        return Response("Dados incorretos!")
         
     def delete(self, request, pk=None):
         usuario = Usuario.objects.filter(id=pk)
@@ -292,9 +292,9 @@ class GrupoView(APIView):
         
         if serializer.is_valid():
             serializer.save()
-            return Response(code=201, data=serializer.data)
+            return Response(data=serializer.data)
 
-        return Response(code=400, data="Dados incorretos!")
+        return Response("Dados incorretos!")
         
     def delete(self, request, pk=None):
         grupo = Grupo.objects.filter(id=pk).first()
@@ -322,9 +322,9 @@ class GrupoCodigoView(APIView):
         
         if serializer.is_valid():
             serializer.save()
-            return Response(code=201, data=serializer.data)
+            return Response(data=serializer.data)
 
-        return Response(code=400, data="Dados incorretos!")
+        return Response(data="Dados incorretos!")
         
     def delete(self, request, pk=None):
         grupo = Grupo.objects.filter(codigo=pk).first()
