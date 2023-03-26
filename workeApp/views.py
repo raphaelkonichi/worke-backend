@@ -119,14 +119,19 @@ class EmpresaViewSet(APIView):
 class ExercicioViewSet(APIView):
 
     def get(self, request):
-        exercicio = Exercicio.objects.all()
-        serializer = ExercicioSerializer(exercicio, many=True)
+        exercicios = Exercicio.objects.all()
+        for item in exercicios:
+            item.categoria = item.get_categoria_display()
+        serializer = ExercicioSerializer(exercicios, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         serializer = ExercicioSerializer(data=request.data)
-        serializer.save()
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response("Dados incorretos!")
 
 class PlanoViewSet(APIView):
 

@@ -31,7 +31,7 @@ class Exercicio(models.Model):
         ('Y', 'Yoga'),
     )
     nome = models.CharField(max_length=80)
-    categoria = models.CharField(max_length=1, choices=CATEGORIAS)
+    categoria = models.CharField(max_length=100, choices=CATEGORIAS)
     data_criacao = models.DateField(default=datetime.date.today)
 
     def __str__(self):
