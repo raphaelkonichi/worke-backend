@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from datetime import datetime as dt, timedelta
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
+from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
 from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer
 from workeApp.utils import id_generator
 import jwt, datetime
@@ -204,7 +204,16 @@ class PesoUsuarioViewSet(APIView):
         updatedserializer = Peso_usuarioSerializer(usuario_peso)
 
         return Response(updatedserializer.data)
-
+    
+class ExercicioUsuarioViewSet(APIView):
+    def get(self, request, pk=None):
+        exercicios = Exercicio_realizado.objects.filter(usuario_id=pk).values('exercicio').annotate(amount = Count('exercicio')).order_by('-amount')
+        for item in exercicios:
+            exercicio = Exercicio.objects.filter(id=item['exercicio']).first()
+            item['exercicio'] = exercicio.nome
+            item['categoria'] = exercicio.get_categoria_display()
+        return Response(exercicios)
+    
 class RegisterView(APIView):
     def post(self, request):
         print("data",request.data)

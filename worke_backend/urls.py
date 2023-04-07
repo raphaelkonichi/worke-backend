@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from workeApp.views import PesoUsuarioViewSet, CategoriaViewSet, ExercicioCategoriaViewSet, UsuariosViewSet, RegisterView, LoginView, LogoutView, TodasEmpresasViewSet, CriarGrupoViewSet, EmpresaViewSet, LoginEmpresaView, RegisterEmpresaView, FuncionarioView, EmpresaFuncionarioView, GrupoView, GrupoCodigoView, EmpresaGrupoView, GrupoFuncionarioView, DashboardFuncionarioView, DashboardFuncionario30DiasView, DashboardTotalSalasView, DashboardPontuacaoTotalSalaView,ExercicioViewSet
+from workeApp.views import ExercicioUsuarioViewSet, PesoUsuarioViewSet, CategoriaViewSet, ExercicioCategoriaViewSet, UsuariosViewSet, RegisterView, LoginView, LogoutView, TodasEmpresasViewSet, CriarGrupoViewSet, EmpresaViewSet, LoginEmpresaView, RegisterEmpresaView, FuncionarioView, EmpresaFuncionarioView, GrupoView, GrupoCodigoView, EmpresaGrupoView, GrupoFuncionarioView, DashboardFuncionarioView, DashboardFuncionario30DiasView, DashboardTotalSalasView, DashboardPontuacaoTotalSalaView,ExercicioViewSet
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -31,6 +31,7 @@ urlpatterns = [
     path('exercicio/', ExercicioViewSet.as_view()),
     path('categorias/', CategoriaViewSet.as_view()),
     path('exercicioCategoria/<str:pk>', ExercicioCategoriaViewSet.as_view()),
+    path('exercicioUsuario/<str:pk>', ExercicioUsuarioViewSet.as_view()),
     path('register', RegisterView.as_view()),
     path('registerEmpresa', RegisterEmpresaView.as_view()),
     path('empresaFuncionario/<int:pk>', EmpresaFuncionarioView.as_view()),
