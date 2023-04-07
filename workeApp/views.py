@@ -207,7 +207,7 @@ class PesoUsuarioViewSet(APIView):
     
 class ExercicioUsuarioViewSet(APIView):
     def get(self, request, pk=None):
-        exercicios = Exercicio_realizado.objects.filter(usuario_id=pk).values('exercicio').annotate(amount = Count('exercicio')).order_by('-amount')
+        exercicios = Exercicio_realizado.objects.filter(usuario_id=pk).values('exercicio').annotate(quantidade = Count('exercicio')).order_by('-quantidade')
         for item in exercicios:
             exercicio = Exercicio.objects.filter(id=item['exercicio']).first()
             item['exercicio'] = exercicio.nome
