@@ -190,10 +190,20 @@ class PesoUsuarioViewSet(APIView):
 
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, pk=None):
+        usuario = Usuario.objects.filter(id=pk).first()
+
         serializer = Peso_usuarioSerializer(data=request.data)
         serializer.save()
-        return Response(serializer.data)
+
+        id = serializer.data['id']
+        usuario_peso = Peso_usuario.objects.get(id=id)
+        usuario_peso.usuario = usuario
+
+        usuario_peso.save()
+        updatedserializer = Peso_usuarioSerializer(usuario_peso)
+
+        return Response(updatedserializer.data)
 
 class RegisterView(APIView):
     def post(self, request):
