@@ -174,19 +174,19 @@ class PlanoViewSet(APIView):
 
 class PesoUsuarioViewSet(APIView):
 
-    def get(self, request):
-        token = request.COOKIES.get('jwt')
+    def get(self, request, pk=None):
+        # token = request.COOKIES.get('jwt')
 
-        if not token:
-            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+        # if not token:
+        #     raise AuthenticationFailed('Não foi possível realizar a autenticação!')
 
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Não foi possível realizar a autenticação!')
+        # try:
+        #     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        # except jwt.ExpiredSignatureError:
+        #     raise AuthenticationFailed('Não foi possível realizar a autenticação!')
 
-        peso_usuario = Peso_usuario.objects.filter(id=payload['id']).first()
-        serializer = Peso_usuarioSerializer(peso_usuario)
+        peso_usuario = Peso_usuario.objects.filter(usuario_id=pk).order_by('data_medicao')
+        serializer = Peso_usuarioSerializer(peso_usuario, many=True)
 
         return Response(serializer.data)
 

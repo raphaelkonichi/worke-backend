@@ -112,7 +112,7 @@ class Peso_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     data_criacao = models.DateField(default=datetime.date.today)
     data_medicao = models.DateField()
-    peso = models.DecimalField(max_digits=3, decimal_places=2)
+    peso = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.peso
