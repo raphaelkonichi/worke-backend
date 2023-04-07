@@ -140,6 +140,15 @@ class ExercicioCategoriaViewSet(APIView):
         serializer = ExercicioSerializer(exercicios, many=True)
         return Response(serializer.data)
     
+class CategoriaViewSet(APIView):
+    def get(self, request):
+        # categorias = Exercicio.categoria.field.choices
+        categorias = [c[1] for c in Exercicio.categoria.field.choices]
+        print(categorias)
+
+        # serializer = ExercicioSerializer(exercicios, many=True)
+        return Response(categorias)
+
 class PlanoViewSet(APIView):
 
     def get(self, request):
