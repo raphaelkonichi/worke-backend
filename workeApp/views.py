@@ -132,7 +132,14 @@ class ExercicioViewSet(APIView):
             return Response(serializer.data)
 
         return Response("Dados incorretos!")
-
+    
+class ExercicioCategoriaViewSet(APIView):
+    def get(self, request, pk=None):
+        print(pk)
+        exercicios = Exercicio.objects.filter(categoria=pk)
+        serializer = ExercicioSerializer(exercicios, many=True)
+        return Response(serializer.data)
+    
 class PlanoViewSet(APIView):
 
     def get(self, request):
