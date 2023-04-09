@@ -137,6 +137,8 @@ class ExercicioCategoriaViewSet(APIView):
     def get(self, request, pk=None):
         print(pk)
         exercicios = Exercicio.objects.filter(categoria=pk)
+        for item in exercicios:
+            item.categoria = item.get_categoria_display()
         serializer = ExercicioSerializer(exercicios, many=True)
         return Response(serializer.data)
     
