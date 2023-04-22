@@ -27,8 +27,11 @@ class Empresa(models.Model):
 
 class Exercicio(models.Model):
     CATEGORIAS = ( 
-        ('A', 'Alongamento'),
-        ('Y', 'Yoga'),
+        ('BRA', 'Braços e ombros'),
+        ('PES', 'Pescoço'),
+        ('PUN', 'Punho e dedos'),
+        ('COS', 'Costas e tronco'),
+        ('PER', 'Pernas'),
     )
     nome = models.CharField(max_length=80)
     categoria = models.CharField(max_length=100, choices=CATEGORIAS)
