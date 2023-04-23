@@ -221,19 +221,11 @@ class ExercicioUsuarioViewSet(APIView):
         usuario = Usuario.objects.get(id=pk)
         exercicio = Exercicio.objects.filter(id=request.data['exercicio']).first()
 
-        serializer = Exercicio_realizado(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer = Exercicio_realizado(usuario=usuario, exercicio=exercicio)
         serializer.save()
+        obj = Exercicio_realizado.objects.all().order_by('-id')[0:1]
 
-        id = serializer.data['id']
-        exercicio_realizado = Exercicio_realizado.objects.get(id=id)
-        exercicio_realizado.usuario = usuario
-        exercicio_realizado.exercicio = exercicio
-        exercicio_realizado.duracao = exercicio.duracao
-        exercicio_realizado.pontuacao = exercicio.pontuacao
-        exercicio_realizado.save()
-
-        updatedserializer = Exercicio_realizadoSerializer(exercicio_realizado)
+        updatedserializer = Exercicio_realizadoSerializer(obj[0])
         return Response(updatedserializer.data)
     
 class RegisterView(APIView):

@@ -107,11 +107,11 @@ class Exercicio_realizado(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     exercicio = models.ForeignKey(Exercicio, on_delete=models.CASCADE)
     data_criacao = models.DateField(default=datetime.date.today)
-    pontuacao = models.IntegerField()
-    duracao = models.IntegerField()
+    pontuacao = models.IntegerField(default=100)
+    duracao = models.IntegerField(default=15)
 
     def __str__(self):
-        return self.data_criacao
+        return str(self.data_criacao)
 
 class Peso_usuario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
