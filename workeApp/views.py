@@ -229,6 +229,8 @@ class ExercicioUsuarioViewSet(APIView):
         exercicio_realizado = Exercicio_realizado.objects.get(id=id)
         exercicio_realizado.usuario = usuario
         exercicio_realizado.exercicio = exercicio
+        exercicio_realizado.duracao = exercicio.duracao
+        exercicio_realizado.pontuacao = exercicio.pontuacao
         exercicio_realizado.save()
 
         updatedserializer = Exercicio_realizadoSerializer(exercicio_realizado)
