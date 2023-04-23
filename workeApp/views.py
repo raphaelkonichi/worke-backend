@@ -214,6 +214,8 @@ class ExercicioUsuarioViewSet(APIView):
         for item in exercicios:
             exercicio = Exercicio.objects.filter(id=item['exercicio']).first()
             item['exercicio'] = exercicio.nome
+            item['id'] = exercicio.id
+            item['categoria_id'] = exercicio.categoria
             item['categoria'] = exercicio.get_categoria_display()
         return Response(exercicios)
     
@@ -226,6 +228,11 @@ class ExercicioUsuarioViewSet(APIView):
         obj = Exercicio_realizado.objects.all().order_by('-id')[0:1]
 
         updatedserializer = Exercicio_realizadoSerializer(obj[0])
+
+        pontuacao = usuario.points + exercicio.pontuacao
+        usuario.points = pontuacao
+        usuario.save()
+
         return Response(updatedserializer.data)
     
 class RegisterView(APIView):

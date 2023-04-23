@@ -74,7 +74,7 @@ class Usuario(AbstractUser):
     frequency = models.CharField(max_length=15, choices=FREQUENCY, null=True)
     # expectativas = models.ManyToManyField(Expectativas, null=True)
     user_type = models.CharField(max_length=1, null=True)
-    points = models.IntegerField(null=True)
+    points = models.IntegerField(default=0)
     consecutive_days = models.IntegerField(null=True)
     qty_exercises = models.IntegerField(null=True)
     total_minutes = models.IntegerField(null=True)
