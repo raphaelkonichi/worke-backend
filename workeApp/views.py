@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
-from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer
+from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer
 from workeApp.utils import id_generator
 import jwt, datetime
 
@@ -216,6 +216,23 @@ class ExercicioUsuarioViewSet(APIView):
             item['exercicio'] = exercicio.nome
             item['categoria'] = exercicio.get_categoria_display()
         return Response(exercicios)
+    
+    def post(self, request, pk=None):
+        usuario = Usuario.objects.get(id=pk)
+        exercicio = Exercicio.objects.filter(id=request.data['exercicio']).first()
+
+        serializer = Exercicio_realizado(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        id = serializer.data['id']
+        exercicio_realizado = Exercicio_realizado.objects.get(id=id)
+        exercicio_realizado.usuario = usuario
+        exercicio_realizado.exercicio = exercicio
+        exercicio_realizado.save()
+
+        updatedserializer = UsuarioSerializer(usuario)
+        return Response(updatedserializer.data)
     
 class RegisterView(APIView):
     def post(self, request):

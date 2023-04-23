@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
+from workeApp.models import Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio, Exercicio_realizado
 from drf_extra_fields.fields import Base64ImageField
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -101,3 +101,15 @@ class Usuario_grupoSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance        
+    
+class Exercicio_realizadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercicio_realizado
+        fields = ['id','usuario','pontuacao','duracao','data_criacao','exercicio']
+
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+
+        instance.save()
+
+        return instance     
