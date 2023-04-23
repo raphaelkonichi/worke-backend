@@ -231,7 +231,7 @@ class ExercicioUsuarioViewSet(APIView):
         exercicio_realizado.exercicio = exercicio
         exercicio_realizado.save()
 
-        updatedserializer = UsuarioSerializer(usuario)
+        updatedserializer = Exercicio_realizadoSerializer(exercicio_realizado)
         return Response(updatedserializer.data)
     
 class RegisterView(APIView):
