@@ -213,10 +213,11 @@ class ExercicioUsuarioViewSet(APIView):
         exercicios = Exercicio_realizado.objects.filter(usuario_id=pk).values('exercicio').annotate(quantidade = Count('exercicio')).order_by('-quantidade')
         for item in exercicios:
             exercicio = Exercicio.objects.filter(id=item['exercicio']).first()
-            item['exercicio'] = exercicio.nome
+            item['pontuacao'] = exercicio.pontuacao
+            item['nome'] = exercicio.nome
             item['id'] = exercicio.id
-            item['categoria_id'] = exercicio.categoria
             item['categoria'] = exercicio.get_categoria_display()
+            item['categoria_id'] = exercicio.categoria
         return Response(exercicios)
     
     def post(self, request, pk=None):
@@ -231,6 +232,8 @@ class ExercicioUsuarioViewSet(APIView):
 
         pontuacao = usuario.points + exercicio.pontuacao
         usuario.points = pontuacao
+        usuario.qty_exercises = usuario.qty_exercises + 1
+        usuario.level = usuario.points / 1000 + 1
         usuario.save()
 
         return Response(updatedserializer.data)
