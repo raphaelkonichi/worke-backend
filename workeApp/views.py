@@ -234,6 +234,7 @@ class ExercicioUsuarioViewSet(APIView):
         usuario.points = pontuacao
         usuario.qty_exercises = usuario.qty_exercises + 1
         usuario.level = usuario.points / 1000 + 1
+        usuario.progress = (usuario.points % 1000) /10
         usuario.save()
 
         return Response(updatedserializer.data)
