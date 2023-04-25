@@ -83,6 +83,8 @@ class Usuario(AbstractUser):
     image = models.TextField(null=True)
     first_access = models.BooleanField(default=False)
     plan = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
+    group = models.ForeignKey('Grupo', on_delete=models.CASCADE, null=True)
+    group_code = models.CharField(max_length=4, null=True)
     enterprise = models.ForeignKey(Empresa, on_delete=models.CASCADE, null=True)
     weight = models.CharField(max_length=3,null=True)
     expectations = models.CharField(max_length=255, null=True)
@@ -139,9 +141,9 @@ class Usuario_grupo(models.Model):
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     pontuacao = models.IntegerField()
-    posicao_ranking = models.IntegerField()
+    posicao_ranking = models.IntegerField(default=0)
     data_criacao = models.DateField(default=datetime.date.today) 
-    data_posicao  = models.DateField()
+    data_posicao  = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.data_criacao

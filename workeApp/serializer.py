@@ -5,7 +5,7 @@ from drf_extra_fields.fields import Base64ImageField
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id','password','first_name','name','email','gender','birth_date','create_date','date_last_access','height','frequency','user_type','points','consecutive_days','qty_exercises','total_minutes','level', 'image','first_access','plan','enterprise','weight', 'expectations']
+        fields = ['id','password','first_name','name','email','gender','birth_date','create_date','date_last_access','height','frequency','user_type','group','group_code','points','consecutive_days','qty_exercises','total_minutes','level', 'image','first_access','plan','enterprise','weight', 'expectations']
         extra_kwargs = {
             'password': {'write_only': True}
         }

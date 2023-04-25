@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from datetime import datetime as dt, timedelta
 from django.db.models import Sum, Count
@@ -8,6 +9,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
 from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer
 from workeApp.utils import id_generator
+from django.http import JsonResponse
 import jwt, datetime
 
 # Create your views here.
@@ -414,6 +416,10 @@ class CriarGrupoViewSet(APIView):
         grupo.admin = usuario
 
         grupo.save()
+        usuario.group = grupo
+        usuario.group_code = grupo.codigo
+        usuario.save()
+
         updatedserializer = GrupoSerializer(grupo)
         return Response(updatedserializer.data)
 
@@ -445,11 +451,17 @@ class EmpresaGrupoView(APIView):
 class GrupoFuncionarioView(APIView):        
     def get(self, request, pk=None):
         grupoobj = Grupo.objects.filter(id=pk).first()
+        usuario = Usuario.objects.filter(id=grupoobj.admin_id).first()
+        print(usuario.id)
 
-        funcionarios = Usuario_grupo.objects.filter(grupo=grupoobj).order_by('-pontuacao')
-        serializer = Usuario_grupoSerializer(funcionarios, many=True)
-
-        return Response(serializer.data)
+        funcionarios = Usuario.objects.filter(grupo=grupoobj).order_by('-points')
+        serializer = UsuarioSerializer(funcionarios, many=True)
+        print(serializer.data)
+        response = {
+            "admin_id": usuario.id,
+            "usuarios": serializer.data
+        }
+        return Response(response)
 
 class DashboardFuncionarioView(APIView):
     def get(self, request):
