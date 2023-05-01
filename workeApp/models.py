@@ -35,7 +35,7 @@ class Exercicio(models.Model):
         ('OMB', 'Ombros'),
         ('TRA', 'Trapézio'),
         ('PES', 'Pescoço'),
-        ('FLE', 'Flexored dos dedos'),
+        ('FLE', 'Flexores dos dedos'),
     )
 
     nome = models.CharField(max_length=80)
