@@ -25,6 +25,14 @@ class Empresa(models.Model):
     def __str__(self):
         return self.nome
 
+class Categoria(models.Model):
+    descricao = models.CharField(max_length=50)
+    sigla = models.CharField(max_length=20)
+    data_criacao = models.DateField(default=datetime.date.today)
+
+    def __str__(self):
+        return self.descricao
+
 class Exercicio(models.Model):
     CATEGORIAS = ( 
         ('GLU', 'Glúteo'),
@@ -40,6 +48,7 @@ class Exercicio(models.Model):
 
     nome = models.CharField(max_length=80)
     categoria = models.CharField(max_length=100, choices=CATEGORIAS)
+    categorias = models.ManyToManyField(Categoria)
     duracao = models.IntegerField(default=15)
     pontuacao = models.IntegerField(default=100)
     data_criacao = models.DateField(default=datetime.date.today)
@@ -47,6 +56,16 @@ class Exercicio(models.Model):
     def __str__(self):
         return self.nome
 
+class Treino(models.Model):
+    numero_treino = models.IntegerField()
+    descricao = models.CharField(max_length=80)
+    objetivo = models.CharField(max_length=255)
+    data_criacao = models.DateField(default=datetime.date.today)
+    exercicios = models.ManyToManyField(Exercicio)
+
+    def __str__(self):
+        return self.descricao
+    
 class Expectativas(models.Model):
     descricao = models.CharField(max_length=50)
     data_criacao = models.DateField(default=datetime.date.today)

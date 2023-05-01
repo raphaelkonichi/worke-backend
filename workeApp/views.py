@@ -6,8 +6,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio
-from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer
+from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio, Treino, Categoria
+from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer, TreinoSerializer
 from workeApp.utils import id_generator
 from django.http import JsonResponse
 import jwt, datetime
@@ -137,10 +137,8 @@ class ExercicioViewSet(APIView):
     
 class ExercicioCategoriaViewSet(APIView):
     def get(self, request, pk=None):
-        print(pk)
-        exercicios = Exercicio.objects.filter(categoria=pk)
-        for item in exercicios:
-            item.categoria = item.get_categoria_display()
+        categoria = Categoria.objects.filter(sigla=pk)
+        exercicios = Exercicio.objects.filter(categorias__in=categoria)
         serializer = ExercicioSerializer(exercicios, many=True)
         return Response(serializer.data)
     
@@ -521,3 +519,18 @@ class LogoutView(APIView):
         }
 
         return response
+
+class TreinoViewSet(APIView):
+
+    def get(self, request):
+        treinos = Treino.objects.all()
+        serializer = TreinoSerializer(treinos, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = TreinoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response("Dados incorretos!")
