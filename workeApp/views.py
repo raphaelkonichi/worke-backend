@@ -122,8 +122,6 @@ class ExercicioViewSet(APIView):
 
     def get(self, request):
         exercicios = Exercicio.objects.all()
-        for item in exercicios:
-            item.categoria = item.get_categoria_display()
         serializer = ExercicioSerializer(exercicios, many=True)
         return Response(serializer.data)
 

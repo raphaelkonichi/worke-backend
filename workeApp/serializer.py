@@ -44,7 +44,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
 class ExercicioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercicio
-        fields = ['id','nome','categoria','categorias','data_criacao']
+        fields = ['id','nome','categorias','data_criacao']
         depth = 1
         
     def create(self, validated_data):
