@@ -47,7 +47,7 @@ class Exercicio(models.Model):
     )
 
     nome = models.CharField(max_length=80)
-    categoria = models.CharField(max_length=100, choices=CATEGORIAS)
+    # categoria = models.CharField(max_length=100, choices=CATEGORIAS)
     categorias = models.ManyToManyField(Categoria)
     duracao = models.IntegerField(default=15)
     pontuacao = models.IntegerField(default=100)

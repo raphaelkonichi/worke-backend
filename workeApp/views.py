@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio, Treino, Categoria
-from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer, TreinoSerializer
+from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer, TreinoSerializer, CategoriaSerializer
 from workeApp.utils import id_generator
 from django.http import JsonResponse
 import jwt, datetime
@@ -144,13 +144,9 @@ class ExercicioCategoriaViewSet(APIView):
     
 class CategoriaViewSet(APIView):
     def get(self, request):
-        categorias = []
-        for c in Exercicio.categoria.field.choices:
-            categorias.append({'id': c[0], 'nome': c[1]})
-
-        print(categorias)
-        # serializer = ExercicioSerializer(exercicios, many=True)
-        return Response(categorias)
+        categorias = Categoria.objects.all()
+        serializer = CategoriaSerializer(categorias, many=True)
+        return Response(serializer.data)
 
 class PlanoViewSet(APIView):
 
