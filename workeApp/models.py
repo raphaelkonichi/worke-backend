@@ -27,12 +27,17 @@ class Empresa(models.Model):
 
 class Exercicio(models.Model):
     CATEGORIAS = ( 
-        ('BRA', 'Braços e ombros'),
+        ('GLU', 'Glúteo'),
+        ('LOM', 'Lombar'),
+        ('POS', 'Posterior de coxa'),
+        ('DOR', 'Dorsais'),
+        ('PER', 'Abdômen oblíquo'),
+        ('OMB', 'Ombros'),
+        ('TRA', 'Trapézio'),
         ('PES', 'Pescoço'),
-        ('PUN', 'Punho e dedos'),
-        ('COS', 'Costas e tronco'),
-        ('PER', 'Pernas'),
+        ('FLE', 'Flexored dos dedos'),
     )
+
     nome = models.CharField(max_length=80)
     categoria = models.CharField(max_length=100, choices=CATEGORIAS)
     duracao = models.IntegerField(default=15)
