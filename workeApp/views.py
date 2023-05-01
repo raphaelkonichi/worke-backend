@@ -205,14 +205,23 @@ class PesoUsuarioViewSet(APIView):
 class ExercicioUsuarioViewSet(APIView):
     def get(self, request, pk=None):
         exercicios = Exercicio_realizado.objects.filter(usuario_id=pk).values('exercicio').annotate(quantidade = Count('exercicio')).order_by('-quantidade')
+
+        all_exercicios = []
         for item in exercicios:
             exercicio = Exercicio.objects.filter(id=item['exercicio']).first()
-            item['pontuacao'] = exercicio.pontuacao
-            item['nome'] = exercicio.nome
-            item['id'] = exercicio.id
-            item['categoria'] = exercicio.get_categoria_display()
-            item['categoria_id'] = exercicio.categoria
-        return Response(exercicios)
+            all_exercicios.append(exercicio)
+
+            # if exercicio.categorias is not None:
+            #     categorias = []
+            #     for cat in exercicio.categorias:
+            #         categorias.append(cat.descricao)
+                
+            #     item['categorias'] = ", ".join(categorias)
+            # item['nome'] = exercicio.nome
+            # item['id'] = exercicio.id
+            
+        serializer = ExercicioSerializer(all_exercicios, many=True)
+        return Response(serializer.data)
     
     def post(self, request, pk=None):
         usuario = Usuario.objects.get(id=pk)
