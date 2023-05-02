@@ -121,7 +121,7 @@ class EmpresaViewSet(APIView):
 class ExercicioViewSet(APIView):
 
     def get(self, request):
-        exercicios = Exercicio.objects.all()
+        exercicios = Exercicio.objects.all().order_by('sequencia')
         serializer = ExercicioSerializer(exercicios, many=True)
         return Response(serializer.data)
 

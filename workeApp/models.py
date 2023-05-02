@@ -48,6 +48,7 @@ class Exercicio(models.Model):
 
     nome = models.CharField(max_length=80)
     # categoria = models.CharField(max_length=100, choices=CATEGORIAS)
+    sequencia = models.IntegerField(default=0)
     categorias = models.ManyToManyField(Categoria)
     duracao = models.IntegerField(default=15)
     pontuacao = models.IntegerField(default=100)
@@ -171,3 +172,10 @@ class Usuario_grupo(models.Model):
 
     def __str__(self):
         return self.data_criacao
+
+# class Notificacao(models.Model):
+#     descricao = models.CharField(max_length=255)    
+#     data_criacao = models.DateField(default=datetime.date.today) 
+
+#     def __str__(self):
+#         return self.descricao
