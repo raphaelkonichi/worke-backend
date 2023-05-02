@@ -67,6 +67,19 @@ class TreinoSerializer(serializers.ModelSerializer):
 
         return instance
 
+class TreinoSemExSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Treino
+        fields = ['id','numero_treino','descricao','objetivo','data_criacao']
+        depth = 1
+        
+    def create(self, validated_data):
+        instance = self.Meta.model(**validated_data)
+
+        instance.save()
+
+        return instance
+
 class PlanoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plano

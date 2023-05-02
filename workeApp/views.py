@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from workeApp.models import Exercicio_realizado, Exercicio_usuario, Usuario, Empresa, Plano, Peso_usuario, Grupo, Usuario_grupo, Exercicio, Treino, Categoria
-from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer, TreinoSerializer, CategoriaSerializer
+from workeApp.serializer import ExercicioSerializer, UsuarioSerializer, EmpresaSerializer, PlanoSerializer, Peso_usuarioSerializer, GrupoSerializer, Usuario_grupoSerializer, Exercicio_realizadoSerializer, TreinoSerializer, CategoriaSerializer, TreinoSemExSerializer
 from workeApp.utils import id_generator
 from django.http import JsonResponse
 import jwt, datetime
@@ -523,11 +523,11 @@ class LogoutView(APIView):
 
         return response
 
-class TreinoViewSet(APIView):
+class TreinosViewSet(APIView):
 
     def get(self, request):
         treinos = Treino.objects.all()
-        serializer = TreinoSerializer(treinos, many=True)
+        serializer = TreinoSemExSerializer(treinos, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -536,4 +536,10 @@ class TreinoViewSet(APIView):
             serializer.save()
             return Response(serializer.data)
 
-        return Response("Dados incorretos!")
+        return Response("Dados incorretos!")    
+
+class TreinoViewSet(APIView):
+    def get(self, request, pk=None):
+        treino = Treino.objects.filter(id=pk).first()
+        serializer = TreinoSerializer(treino)
+        return Response(serializer.data)

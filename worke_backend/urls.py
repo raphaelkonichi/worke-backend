@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from workeApp.views import ExercicioUsuarioViewSet, PesoUsuarioViewSet, CategoriaViewSet, ExercicioCategoriaViewSet, TreinoViewSet, UsuariosViewSet, RegisterView, LoginView, LogoutView, TodasEmpresasViewSet, CriarGrupoViewSet, EmpresaViewSet, LoginEmpresaView, RegisterEmpresaView, FuncionarioView, EmpresaFuncionarioView, GrupoView, GrupoCodigoView, EmpresaGrupoView, GrupoFuncionarioView, DashboardFuncionarioView, DashboardFuncionario30DiasView, DashboardTotalSalasView, DashboardPontuacaoTotalSalaView,ExercicioViewSet
+from workeApp.views import ExercicioUsuarioViewSet, PesoUsuarioViewSet, CategoriaViewSet, ExercicioCategoriaViewSet, TreinoViewSet, TreinosViewSet, UsuariosViewSet, RegisterView, LoginView, LogoutView, TodasEmpresasViewSet, CriarGrupoViewSet, EmpresaViewSet, LoginEmpresaView, RegisterEmpresaView, FuncionarioView, EmpresaFuncionarioView, GrupoView, GrupoCodigoView, EmpresaGrupoView, GrupoFuncionarioView, DashboardFuncionarioView, DashboardFuncionario30DiasView, DashboardTotalSalasView, DashboardPontuacaoTotalSalaView,ExercicioViewSet
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -49,7 +49,8 @@ urlpatterns = [
     path('login', LoginView.as_view()),
     path('loginEmpresa', LoginEmpresaView.as_view()),
     path('logout', LogoutView.as_view()),
-    path('treinos', TreinoViewSet.as_view()),
+    path('treino/<int:pk>', TreinoViewSet.as_view()),
+    path('treinos', TreinosViewSet.as_view()),
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
