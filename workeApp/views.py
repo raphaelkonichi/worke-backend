@@ -227,10 +227,28 @@ class ExercicioUsuarioViewSet(APIView):
         usuario = Usuario.objects.get(id=pk)
         exercicio = Exercicio.objects.filter(id=request.data['exercicio']).first()
 
+        fez_hoje = False
+
+        exercicio_hoje = Exercicio_realizado.objects.filter(usuario_id=pk, data_criacao=dt.today()).first()
+
+        if exercicio_hoje is not None:
+            fez_hoje = True
+
         serializer = Exercicio_realizado(usuario=usuario, exercicio=exercicio)
         serializer.save()
         obj = Exercicio_realizado.objects.all().order_by('-id')[0:1]
 
+        ontem = dt.today() - timedelta(days=1)
+
+        exercicio_ontem = Exercicio_realizado.objects.filter(usuario_id=pk, data_criacao=ontem).first()
+
+        dias_consecutivos = 0
+
+        if exercicio_ontem is None:
+            dias_consecutivos = 1
+        elif not fez_hoje:
+            dias_consecutivos = dias_consecutivos + 1
+        
         updatedserializer = Exercicio_realizadoSerializer(obj[0])
 
         pontuacao = usuario.points + exercicio.pontuacao
@@ -239,6 +257,8 @@ class ExercicioUsuarioViewSet(APIView):
         usuario.level = usuario.points / 1000 + 1
         usuario.progress = (usuario.points % 1000) /10
         usuario.total_minutes = usuario.points / 400
+        usuario.consecutive_days = dias_consecutivos
+
         usuario.save()
 
         return Response(updatedserializer.data)
@@ -272,6 +292,10 @@ class LoginView(APIView):
             "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             "iat": datetime.datetime.utcnow()
         }
+
+        # checa se o usuario fez exercicio ontem e se não fez reseta dias consecutivos
+        
+
 
         token = jwt.encode(payload, 'secret', algorithm='HS256')
 
