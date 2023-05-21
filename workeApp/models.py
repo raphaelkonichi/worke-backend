@@ -106,7 +106,7 @@ class Usuario(AbstractUser):
     level = models.IntegerField(default=1)
     progress = models.IntegerField(default=0)
     image = models.TextField(null=True)
-    first_access = models.BooleanField(default=False)
+    first_access = models.BooleanField(default=True)
     plan = models.ForeignKey(Plano, on_delete=models.CASCADE, null=True)
     group = models.ForeignKey('Grupo', on_delete=models.CASCADE, null=True)
     group_code = models.CharField(max_length=4, null=True)

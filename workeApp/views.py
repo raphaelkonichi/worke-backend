@@ -295,7 +295,9 @@ class LoginView(APIView):
 
         # checa se o usuario fez exercicio ontem e se não fez reseta dias consecutivos
         
-
+        if usuario.first_access:
+            usuario.first_access = False
+            usuario.save()
 
         token = jwt.encode(payload, 'secret', algorithm='HS256')
 
